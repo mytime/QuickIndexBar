@@ -3,12 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.chebao.quickIndexbar.MainActivity">
+
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
     <com.chebao.quickIndexbar.QuickIndexBar
         android:id="@+id/quickIndexBar"
         android:layout_width="30dp"
-        android:background="@android:color/holo_red_dark"
-        android:layout_height="match_parent" />
+        android:layout_alignParentRight="true"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_red_dark" />
 </RelativeLayout>
