@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.chebao.quickIndexbar.MainActivity">
+
+    <com.chebao.quickIndexbar.QuickIndexBar
+        android:layout_width="30dp"
+        android:background="@android:color/holo_red_dark"
+        android:layout_height="match_parent" />
+</RelativeLayout>
