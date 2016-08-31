@@ -1,13 +1,14 @@
 package com.chebao.quickIndexbar;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,19 +67,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //
-        Log.e("tag",PinYinUtil.getPinyin("闫万福"));
-        Log.e("tag",PinYinUtil.getPinyin("*闫#万福"));
+        //测试汉字转拼音
+        //Log.e("tag",PinYinUtil.getPinyin("闫万福"));
+        //Log.e("tag",PinYinUtil.getPinyin("*闫#万福"));
+
+        // ViewHelper 是第三方库动画库 NineOldAndroids的子类
+        // 通过缩小currentWord来实现隐藏
+        ViewHelper.setScaleX(currentWord,0);
+        ViewHelper.setScaleY(currentWord,0);
     }
 
     /**
      * 显示当前触摸的字母
      * @param letter
      */
+    private boolean isScale = false;
     private Handler handler = new Handler();
     private void showCurrentWord(String letter) {
-        currentWord.setVisibility(View.VISIBLE);
+        // 使用动画替代VISIBLE
+        //currentWord.setVisibility(View.VISIBLE);
         currentWord.setText(letter);
+        if (!isScale){
+            isScale = true;
+            ViewPropertyAnimator.animate(currentWord).scaleX(1f)
+                    .setInterpolator(new OvershootInterpolator())
+                    .setDuration(350).start();
+            ViewPropertyAnimator.animate(currentWord).scaleY(1f)
+                    .setInterpolator(new OvershootInterpolator())
+                    .setDuration(350).start();
+        }
 
         //先移除之前的任务
         handler.removeCallbacksAndMessages(null);
@@ -88,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                currentWord.setVisibility(View.INVISIBLE);
+                //currentWord.setVisibility(View.INVISIBLE);
+                ViewPropertyAnimator.animate(currentWord).scaleX(0f).setDuration(450).start();
+                ViewPropertyAnimator.animate(currentWord).scaleY(0f).setDuration(450).start();
+                isScale = false;
             }
         },1500);
 
