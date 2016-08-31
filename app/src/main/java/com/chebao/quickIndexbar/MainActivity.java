@@ -1,11 +1,13 @@
 package com.chebao.quickIndexbar;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +19,7 @@ import java.util.Collections;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private TextView currentWord;
     private QuickIndexBar quickIndexBar;
     private ListView listview;
     private ArrayList<Friend> friends = new ArrayList<Friend>();
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listview = (ListView)findViewById(R.id.listview);
+        currentWord = (TextView)findViewById(R.id.currentWord);
 
 
         //1. 准备数据
@@ -45,13 +49,49 @@ public class MainActivity extends AppCompatActivity {
         quickIndexBar.setOnTouchLetterListener(new QuickIndexBar.OnTouchLetterLintener() {
             @Override
             public void onToucheLetter(String letter) {
-                Log.e("tag","letter:"+ letter);
+                //letter是接口传出来的字母
+                //Log.e("tag","letter:"+ letter);
+                //根据当前触摸的字母去listview集合中找这个字母，找到后把对应的字母设置到屏幕顶端
+                for (int i = 0; i < friends.size() ; i++) {
+                    String firstWord = friends.get(i).getPinyin().charAt(0)+"";
+                    if (letter.equals(firstWord)){
+                        // 相等的话就把当前item放到屏幕顶端
+                        listview.setSelection(i);
+                        break; // 找到第一个就停止循环
+                    }
+                }
+
+                //显示当前触摸的字母
+                showCurrentWord(letter);
             }
         });
 
         //
         Log.e("tag",PinYinUtil.getPinyin("闫万福"));
         Log.e("tag",PinYinUtil.getPinyin("*闫#万福"));
+    }
+
+    /**
+     * 显示当前触摸的字母
+     * @param letter
+     */
+    private Handler handler = new Handler();
+    private void showCurrentWord(String letter) {
+        currentWord.setVisibility(View.VISIBLE);
+        currentWord.setText(letter);
+
+        //先移除之前的任务
+        handler.removeCallbacksAndMessages(null);
+
+
+        //延时1500毫秒隐藏currentWord
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                currentWord.setVisibility(View.INVISIBLE);
+            }
+        },1500);
+
     }
 
     private void fillList(){

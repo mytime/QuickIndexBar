@@ -49,10 +49,24 @@ public class MyAdapter extends BaseAdapter {
         Friend friend = list.get(i);
         holder.name.setText(friend.getName());
 
-
         // 设置首字母
         String currentWord = friend.getPinyin().charAt(0)+"";
-        holder.first_word.setText(currentWord);
+        if (i>0){
+            // 获取上一个item的首字母
+            String lastWord = list.get(i-1).getPinyin().charAt(0)+"";
+            //当前首字母和上一个首字母比较
+            if (currentWord.equals(lastWord)){
+                //如果相等就隐藏当前item的first_word控件
+                holder.first_word.setVisibility(View.GONE);
+            }else{
+                holder.first_word.setVisibility(View.VISIBLE);
+                holder.first_word.setText(currentWord);
+            }
+        }else{
+            holder.first_word.setVisibility(View.VISIBLE);
+            holder.first_word.setText(currentWord);
+        }
+
 
 
 

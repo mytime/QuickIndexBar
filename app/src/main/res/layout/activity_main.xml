@@ -17,4 +17,16 @@
         android:layout_alignParentRight="true"
         android:layout_height="match_parent"
         android:background="@android:color/holo_red_dark" />
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/currentWord"
+        android:background="@drawable/bg"
+        android:text="A"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:gravity="center"
+        android:textColor="#FFF"
+        android:layout_centerInParent="true"
+        android:layout_width="110dp"
+        android:layout_height="110dp" />
 </RelativeLayout>
